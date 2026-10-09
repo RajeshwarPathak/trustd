@@ -83,3 +83,7 @@ After the app is deployed:
 ## Security and limitations
 
 Because the score is generated in the browser, it is not cheat-proof. If you want a trusted ranking, move score validation to a secure serverless endpoint or backend and store only verified values.
+
+## Contact
+
+Made by **Raj_Pathak** · [pathak.r.rajeshwar@gmail.com](mailto:pathak.r.rajeshwar@gmail.com)
