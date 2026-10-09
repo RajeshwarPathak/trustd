@@ -1,1 +1,17 @@
-# Local Supabase configuration\n.env\n.env.*\n!.env.example\nconfig.local.js\n.DS_Store\nThumbs.db\n.vercel\n
+# Ignore local runtime and editor files
+.DS_Store
+Thumbs.db
+
+# Common local dev artifacts
+node_modules/
+.env
+.env.*
+.vite/
+.cache/
+*.log
+
+# OS/editor metadata
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,36 +1,85 @@
-# TRUSTD 💜
+# TRUSTD
 
-A playful friendship quiz app. Create a quiz, share the link, compare scores, and print a just-for-fun certificate.
-
-## Run locally
-
-Open `index.html` in a browser or serve this repository with any static web server. No build step is required.
-
-## Configure the leaderboard (optional)
-
-1. Create a Supabase project.
-2. Run [supabase/setup.sql](supabase/setup.sql) in the SQL Editor.
-3. Copy your Project URL and **publishable/anon key** into `config.js`. Both values are visible to every browser user by design.
-4. Deploy the repository to Vercel as a static site with the repository root as the project root.
-
-Never place a Supabase service-role key in this app, `.env`, browser code, or Vercel client variables. The service-role key bypasses row-level security.
-
-Without Supabase configured, quiz creation, share links, results, certificates, and browser-saved quizzes continue to work; shared leaderboard reads and writes are unavailable.
-
-## Privacy and limitations
-
-Quiz answers are encoded into the share URL so friends can play without accounts. Encoding is not encryption: anyone with the link can inspect the correct answers. Saved quizzes are kept in that browser's local storage.
-
-Leaderboard submissions are sent from the browser. Scores, names, and quiz metadata can be spoofed, and anonymous users can submit repeatedly. Treat the leaderboard as casual entertainment, not a trusted record. Do not collect sensitive personal information.
-
-## Deploy to Vercel
-
-Import this GitHub repository in Vercel and deploy using the default static settings. No server-side secrets or build command are needed. Set the public Supabase URL and publishable key in `config.js` before deployment if you want shared leaderboards.
+TRUSTD is a static friendship quiz and leaderboard app that lets you create playful “Who knows me best?” quizzes and share them with friends.
 
 ## Features
 
-- Quiz creation with 10, 15, or 20 questions and editable answer keys
-- Shareable links and quiz play/results
-- Optional Supabase leaderboard
-- Printable certificates
-- Local saved quizzes
+- Responsive layout for mobile and desktop
+- Custom quiz builder with 10, 15, and 20-question options
+- Editable question bank and question templates
+- Shareable live quiz links
+- Score calculation and certificate generator
+- Saved quizzes in browser storage
+- Supabase leaderboard support
+- Friendly empty/error states when the backend is not configured
+
+## Project structure
+
+- `index.html` — the complete TRUSTD app
+- `README.md` — set up and deployment instructions
+- `.gitignore` — project ignores
+- `supabase/setup.sql` — Supabase schema, indexes, and RLS configuration
+
+## Local preview
+
+Because this is a static HTML app, you can preview it locally with any local web server:
+
+```bash
+cd /path/to/trustd
+python3 -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000
+```
+
+## Supabase setup
+
+The app is designed to use the public project URL and anonymous/publishable key already embedded in the browser code:
+
+```text
+https://fbagsiysuvcnshorribo.supabase.co
+```
+
+This app is intentionally designed to work without a secret backend key. It uses only the public Supabase key in the browser.
+
+Important security note:
+
+- Do not expose a service-role key or database password in the browser.
+- Client-side leaderboard scores can be manipulated.
+- Treat the leaderboard as a fun public ranking, not a trusted verification system.
+- For production-grade trusted scoring, validate the score server-side before storing it.
+
+Run the SQL in `supabase/setup.sql` inside the Supabase SQL Editor.
+
+## Vercel deployment
+
+1. Open the GitHub repo: https://github.com/RajeshwarPathak/trustd
+2. In Vercel, click Add Project and import this repository.
+3. Use the default static-site settings:
+   - Framework: None / Static
+   - Build command: leave empty
+   - Output directory: `.`
+4. Click Deploy.
+5. After the deployment completes, verify the page loads and that the quiz works.
+
+## Custom domain
+
+After the app is deployed:
+
+1. Open the Vercel project.
+2. Go to Settings → Domains.
+3. Add the custom domain.
+4. Update the DNS records with the values Vercel provides.
+
+## Notes
+
+- This is a front-end static app; no package install or framework is required.
+- The leaderboard has live support when the database table is configured and the app can reach Supabase.
+- If Supabase is unavailable, the app keeps working and shows an explanatory message instead of failing silently.
+
+## Security and limitations
+
+Because the score is generated in the browser, it is not cheat-proof. If you want a trusted ranking, move score validation to a secure serverless endpoint or backend and store only verified values.

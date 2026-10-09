@@ -1,7 +1,5 @@
--- TRUSTD live submissions + leaderboard setup
--- Run this in Supabase Dashboard → SQL Editor → New query.
--- Public quiz scores are intentionally readable for the leaderboard.
--- Do not store private answers or sensitive personal information in this table.
+-- TRUSTD leaderboard setup
+-- Run this in Supabase Dashboard → SQL Editor.
 
 create table if not exists public.quiz_submissions (
   id bigint generated always as identity primary key,
@@ -19,8 +17,6 @@ create index if not exists quiz_submissions_leaderboard_idx
 
 alter table public.quiz_submissions enable row level security;
 
--- Public visitors can submit quiz results and read the scores for leaderboards.
--- They cannot update or delete existing submissions through these policies.
 drop policy if exists "Anyone can submit TRUSTD quiz scores" on public.quiz_submissions;
 create policy "Anyone can submit TRUSTD quiz scores"
   on public.quiz_submissions for insert to anon, authenticated
@@ -37,4 +33,3 @@ create policy "Anyone can read TRUSTD leaderboard scores"
   using (true);
 
 grant select, insert on public.quiz_submissions to anon, authenticated;
-
