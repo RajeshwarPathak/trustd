@@ -86,4 +86,4 @@ Because the score is generated in the browser, it is not cheat-proof. If you wan
 
 ## Contact
 
-Made by **Raj_Pathak** · [pathak.r.rajeshwar@gmail.com](mailto:pathak.r.rajeshwar@gmail.com)
+Made by **Raj_Pathak** · [pathak.r.rajeshwar@gmail.com](mailto:pathak.r.rajeshwar@gmail.com) · Instagram: [@raj_pathak._](https://www.instagram.com/raj_pathak._/)
