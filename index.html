@@ -87,18 +87,18 @@ const translations={
 const localizedBase=new WeakMap(),localizedLast=new WeakMap();
 let activeLanguage='en';
 function translateDom(root=document){
-  const language=translations[activeLanguage];if(!language)return;
+  const language=translations[activeLanguage]||{};
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
   let node;
   while((node=walker.nextNode())){
     if(!node.parentElement||node.parentElement.closest('script,style,select'))continue;
     let base=localizedBase.get(node);
     const current=node.nodeValue;
+    const last=localizedLast.get(node);
     if(base===undefined){base=current;localizedBase.set(node,base);}
-    else if(current!==localizedLast.get(node)&&current!==base){base=current;localizedBase.set(node,base);}
-    const trimmed=base.trim(),translated=language[trimmed];
-    if(!translated)continue;
-    const leading=base.match(/^\s*/)?.[0]||'',trailing=base.match(/\s*$/)?.[0]||'';
+    else if(current!==last&&current!==base){base=current;localizedBase.set(node,base);}
+    const trimmed=base.trim(),translated=language[trimmed]??trimmed;
+    const leading=base.match(/^\\s*/)?.[0]||'',trailing=base.match(/\\s*$/)?.[0]||'';
     const value=leading+translated+trailing;
     if(current!==value){node.nodeValue=value;localizedLast.set(node,value);}
   }
@@ -110,8 +110,8 @@ function translateDom(root=document){
       const store=el.__trustdLocalization||(el.__trustdLocalization={});
       if(store[key]===undefined)store[key]=current;
       else if(current!==store[key]&&current!==store[key+'_last'])store[key]=current;
-      const value=language[store[key]];
-      if(value){el.setAttribute(attribute,value);store[key+'_last']=value;}
+      const value=language[store[key]]??store[key];
+      if(current!==value){el.setAttribute(attribute,value);store[key+'_last']=value;}
     }
   });
 }
@@ -126,7 +126,7 @@ function initLanguages(){
   let saved='en';try{saved=localStorage.getItem('trustdLanguage')||'en'}catch{}
   setLanguage(saved);
   document.querySelector('#languageSelect')?.addEventListener('change',e=>setLanguage(e.target.value));
-  new MutationObserver(records=>{for(const r of records){if(r.type==='childList'){for(const n of r.addedNodes)if(n.nodeType===1)translateDom(n);else if(n.nodeType===3)translateDom(n.parentElement||document);}else if(r.type==='characterData')translateDom(r.target.parentElement||document);}}).observe(document.querySelector('main'),{subtree:true,childList:true,characterData:true});
+  new MutationObserver(records=>{for(const r of records){if(r.type==='childList'){for(const n of r.addedNodes)if(n.nodeType===1)translateDom(n);else if(n.nodeType===3)translateDom(n.parentElement||document);}else if(r.type==='characterData'&&r.target.nodeValue!==localizedLast.get(r.target))translateDom(r.target.parentElement||document);}}).observe(document.querySelector('main'),{subtree:true,childList:true,characterData:true});
 }
 
 const SUPABASE_URL='https://fbagsiysuvcnshorribo.supabase.co'; const SUPABASE_ANON_KEY='sb_publishable_xyGVBi3F7Bh8ojydJXaQ5w_IdAxG4LJ';
