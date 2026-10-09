@@ -1,0 +1,1 @@
+// Configure with your Supabase project URL and publishable (anon) key. Never use a service-role key here.\nwindow.TRUSTD_CONFIG = {\n  supabaseUrl: '',\n  supabaseAnonKey: '',\n};\n
