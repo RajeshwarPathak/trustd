@@ -1,0 +1,1 @@
+# Local Supabase configuration\n.env\n.env.*\n!.env.example\nconfig.local.js\n.DS_Store\nThumbs.db\n.vercel\n
