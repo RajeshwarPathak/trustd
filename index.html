@@ -98,7 +98,7 @@ function translateDom(root=document){
     if(base===undefined){base=current;localizedBase.set(node,base);}
     else if(current!==last&&current!==base){base=current;localizedBase.set(node,base);}
     const trimmed=base.trim(),translated=language[trimmed]??trimmed;
-    const leading=base.match(/^\\s*/)?.[0]||'',trailing=base.match(/\\s*$/)?.[0]||'';
+    const leading=base.match(/^\s*/)?.[0]||'',trailing=base.match(/\s*$/)?.[0]||'';
     const value=leading+translated+trailing;
     if(current!==value){node.nodeValue=value;localizedLast.set(node,value);}
   }
