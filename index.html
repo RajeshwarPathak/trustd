@@ -272,7 +272,7 @@ let questionBank=uniqueQuestionList([...starter,...trustQuizPack,...Object.value
 let bankBatchIndex=0;
 let selectedQuestionCount=10;
 function updateQuestionBankUI(){
- const count=$('#bankQuestionCount');if(count)count.textContent=`Available: ${questionBank.length}`;
+ const count=$('#bankQuestionCount');if(count){const n=activeLanguage==='en'?questionBank.length:questionBank.filter(q=>localizedQuestionPrompts.has(q.q)).length;count.textContent=activeLanguage==='en'?`Available: ${n}`:`${activeLanguage==='hi'?'अनुवादित':'Translated'}: ${n}`;}
  const build=$('#buildFromBank');if(build)build.textContent=`🎲 Build ${selectedQuestionCount}-question quiz`;
  $$('[data-qcount]').forEach(b=>{const active=+b.dataset.qcount===selectedQuestionCount;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const more=$('#generateMoreQuestions');
