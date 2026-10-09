@@ -12,6 +12,7 @@
 <section id="play" class="panel hidden"><div id="intro"><span class="badge">💜 FRIENDSHIP CHALLENGE</span><h2 id="playTitle"></h2><p id="playBy" class="muted"></p><div class="field"><label for="player">Your nickname</label><input id="player" maxlength="24" placeholder="Enter a nickname"></div><button class="btn primary" id="startBtn">Let's play ✨</button></div><div id="game" class="hidden"><div class="row"><span class="muted small" id="qNumber"></span><span class="muted small" id="qPercent" style="text-align:right"></span></div><div class="progress"><span id="bar"></span></div><h2 id="questionText"></h2><div id="answers"></div><button class="btn primary" id="nextBtn">Next question →</button></div><div id="result" class="hidden"></div></section>
 <section id="mine" class="panel hidden"><h2>🏆 My quizzes</h2><p class="muted">Quizzes saved in this browser. Open one to refresh its friend leaderboard.</p><div id="mineList"></div><button class="btn" id="backCreateBtn">＋ Create a quiz</button></section>
 </main><footer>TRUSTD 💜 Just for fun. A score is not a measure of real friendship or trust.</footer><div id="toast" class="toast" role="status"></div>
+<script src="/config.js"></script>
 <script>
 const SB_URL=window.TRUSTD_CONFIG?.supabaseUrl||'',SB_KEY=window.TRUSTD_CONFIG?.supabaseAnonKey||'';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
