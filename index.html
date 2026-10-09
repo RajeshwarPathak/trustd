@@ -276,7 +276,7 @@ function updateQuestionBankUI(){
  const build=$('#buildFromBank');if(build)build.textContent=`🎲 Build ${selectedQuestionCount}-question quiz`;
  $$('[data-qcount]').forEach(b=>{const active=+b.dataset.qcount===selectedQuestionCount;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
  const more=$('#generateMoreQuestions');
- if(more){more.disabled=bankBatchIndex>=extraBankBatches.length;if(bankBatchIndex>=extraBankBatches.length)more.textContent='✅ All extra packs added';else more.textContent='✨ Generate & add questions'}
+ if(more){if(activeLanguage==='en'){more.disabled=bankBatchIndex>=extraBankBatches.length;if(bankBatchIndex>=extraBankBatches.length)more.textContent='✅ All extra packs added';else more.textContent='✨ Generate & add questions'}else{more.disabled=questions.length>=20;more.textContent=activeLanguage==='hi'?'✨ और अनुवादित सवाल जोड़ें':'✨ Add more translated questions'}}
  const current=$('#currentQuizLength');if(current)current.textContent=`Current quiz: ${questions.length} question${questions.length===1?'':'s'}`;
 }
 function buildQuizFromBank(){
@@ -289,6 +289,18 @@ function buildQuizFromBank(){
 }
 function questionKey(q){return String(q.q).replace(/^\p{Emoji_Presentation}\s*/u,'').trim().toLowerCase()}
 function generateMoreQuestionIdeas(){
+ if(activeLanguage!=='en'){
+  const present=new Set(questions.map(questionKey));
+  const targetCount=questions.length<10?10:(questions.length<15?15:20);
+  const slots=Math.max(0,targetCount-questions.length);
+  const candidates=questionBank.filter(q=>localizedQuestionPrompts.has(q.q)&&!present.has(questionKey(q)));
+  for(let i=candidates.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[candidates[i],candidates[j]]=[candidates[j],candidates[i]]}
+  const added=candidates.slice(0,slots);
+  added.forEach(q=>questions.push({q:q.q,opts:[...q.opts],a:q.a??0}));
+  if(added.length){selectedQuestionCount=Math.max(selectedQuestionCount,questions.length);renderEditor();toast(activeLanguage==='hi'?'अनुवादित सवाल आपकी क्विज़ में जोड़ दिए!':'Translated questions tumhari quiz mein add ho gaye!');$('#questionEditor').scrollIntoView({behavior:'smooth',block:'start'});}
+  else toast(activeLanguage==='hi'?'और अनुवादित सवाल उपलब्ध नहीं हैं।':'Aur translated questions available nahi hain.');
+  return;
+ }
  if(bankBatchIndex>=extraBankBatches.length){toast('All extra packs are in the question bank. Select 10, 15 or 20 and tap Build Quiz to use a fresh mix.');return}
  const batch=extraBankBatches[bankBatchIndex++];
  const before=questionBank.length;
