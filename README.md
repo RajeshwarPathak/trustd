@@ -5,6 +5,7 @@ TRUSTD is a static friendship quiz and leaderboard app that lets you create play
 ## Features
 
 - Responsive layout for mobile and desktop
+- English, Hindi, and Hinglish interface options
 - Custom quiz builder with 10, 15, and 20-question options
 - Editable question bank and question templates
 - Shareable live quiz links
