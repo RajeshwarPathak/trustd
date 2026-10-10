@@ -10,6 +10,7 @@ TRUSTD is a static friendship quiz and leaderboard app that lets you create play
 - Editable question bank and question templates
 - Compact, shareable quiz links stored under short IDs in Supabase (legacy inline links still work)
 - Score calculation and certificate generator
+- Quiz takers see only right/wrong; quiz creators can review each receiver's answers and missed questions
 - Quiz takers see only right/wrong; creators can review each attempt on their saved quiz
 - Saved quizzes in browser storage
 - Supabase leaderboard support
@@ -52,11 +53,13 @@ Important security note:
 - Do not expose a service-role key or database password in the browser.
 - Client-side leaderboard scores can be manipulated.
 - Treat the leaderboard as a fun public ranking, not a trusted verification system.
-- Quiz link rows are public to anyone with the link and have no expiration in this setup; do not add sensitive questions or answers.
+- Quiz questions in a link are public to anyone with the link and do not expire; do not include private information.
+- Detailed answer choices are protected by a private creator key kept with the saved quiz in the creator's browser. Clearing that browser storage means the response details cannot be recovered.
+- Player names and scores remain public leaderboard data, and client-submitted scores can be spoofed.
 - If the updated `shared_quizzes` table has not been created, the app falls back to a longer inline link.
 - For production-grade trusted scoring, validate the score server-side before storing it.
 
-Run the current SQL in `supabase/setup.sql` inside the Supabase SQL Editor. This creates leaderboard storage and short-link storage. If you ran an older version, run the updated file again; its setup is safe to re-run.
+Run the current SQL in `supabase/setup.sql` inside the Supabase SQL Editor. It creates leaderboard and short-link storage, private creator response access, and the answer-choice column. If you ran an older version, run the latest file again; it is safe to re-run.
 
 ## Vercel deployment
 
