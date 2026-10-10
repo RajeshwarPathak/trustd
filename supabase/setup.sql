@@ -33,3 +33,32 @@ create policy "Anyone can read TRUSTD leaderboard scores"
   using (true);
 
 grant select, insert on public.quiz_submissions to anon, authenticated;
+
+
+-- Short quiz links: quiz payloads are public by design, as recipients can take
+-- the quiz. Never put private information in a shared quiz.
+create table if not exists public.shared_quizzes (
+  id text primary key check (id ~ '^[a-f0-9]{18}$'),
+  quiz_data jsonb not null check (
+    jsonb_typeof(quiz_data) = 'object'
+    and octet_length(quiz_data::text) <= 24000
+    and case when jsonb_typeof(quiz_data->'questions') = 'array' then jsonb_array_length(quiz_data->'questions') between 3 and 20 else false end
+  ),
+  created_at timestamptz not null default now()
+);
+
+alter table public.shared_quizzes enable row level security;
+drop policy if exists "Anyone can create TRUSTD quiz links" on public.shared_quizzes;
+create policy "Anyone can create TRUSTD quiz links"
+  on public.shared_quizzes for insert to anon, authenticated
+  with check (
+    id ~ '^[a-f0-9]{18}$'
+    and jsonb_typeof(quiz_data) = 'object'
+    and octet_length(quiz_data::text) <= 24000
+    and jsonb_typeof(quiz_data->'questions') = 'array'
+  );
+drop policy if exists "Anyone can read TRUSTD quiz links" on public.shared_quizzes;
+create policy "Anyone can read TRUSTD quiz links"
+  on public.shared_quizzes for select to anon, authenticated
+  using (true);
+grant select, insert on public.shared_quizzes to anon, authenticated;
