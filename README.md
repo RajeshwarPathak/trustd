@@ -10,6 +10,7 @@ TRUSTD is a static friendship quiz and leaderboard app that lets you create play
 - Editable question bank and question templates
 - Compact, shareable quiz links stored under short IDs in Supabase (legacy inline links still work)
 - Score calculation and certificate generator
+- Quiz takers see only right/wrong; creators can review each attempt on their saved quiz
 - Saved quizzes in browser storage
 - Supabase leaderboard support
 - Friendly empty/error states when the backend is not configured
