@@ -54,7 +54,7 @@ Important security note:
 - Client-side leaderboard scores can be manipulated.
 - Treat the leaderboard as a fun public ranking, not a trusted verification system.
 - Quiz questions in a link are public to anyone with the link and do not expire; do not include private information.
-- Detailed answer choices are protected by a private creator key kept with the saved quiz in the creator's browser. Clearing that browser storage means the response details cannot be recovered.
+- Submitted receiver answer details are protected by a private creator key kept with the saved quiz in the creator's browser. Clearing that browser storage means the response details cannot be recovered.
 - Player names and scores remain public leaderboard data, and client-submitted scores can be spoofed.
 - If the updated `shared_quizzes` table has not been created, the app falls back to a longer inline link.
 - For production-grade trusted scoring, validate the score server-side before storing it.
